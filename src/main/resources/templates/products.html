@@ -1,49 +1,83 @@
 <html xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="fragments/header.html::header(${title})"/>
-    <body>
-        <div class="container">
-            <form class="row g-3" th:action="@{'/products/filters'}" method="GET">
+
+<head th:replace="fragments/header.html::header(${title})"/>
+
+<body>
+<div class="container">
+    <div class="row g-3">
+        <div class="col-8">
+            <form class="row" th:action="@{'/products'}" method="GET">
                 <div class="col-auto">
-                    <input type="number" class="form-control-plaintext" th:name="minPrice" th:value="${param.get('minPrice')}" placeholder="Мин">
+                    <input type="number" class="form-control-plaintext" th:name="minPrice"
+                           th:value="${param.get('minPrice')}" placeholder="Мин">
                 </div>
                 <div class="col-auto">
-                    <input type="number" class="form-control-plaintext" th:name="maxPrice" th:value="${param.maxPrice}" placeholder="Макс">
+                    <input type="number" class="form-control-plaintext" th:name="maxPrice" th:value="${param.maxPrice}"
+                           placeholder="Макс">
                 </div>
                 <div class="col-auto ">
                     <button type="submit" class="btn btn-primary mb-3" th:text="Применить">Применить</button>
                 </div>
             </form>
-            <span th:text="${'Количество страниц равно ' + #request.getAttribute('pageQty')}">Количество страниц</span>
-            <table class="table">
-                <thead>
-                <tr>
-                    <th scope="col">id</th>
-                    <th scope="col">Title</th>
-                    <th scope="col">Price</th>
-                    <th scope="col">Actions</th>
-                </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="prod : ${products}">
-                        <td th:text="${prod.id}">Mark</td>
-                        <td th:text="${prod.title}">Otto</td>
-                        <td th:text="${prod.price}">111</td>
-                        <td>
-                            <a class="btn btn-danger" th:href="@{${#request.getServletPath()} + '/del/'+ ${prod.id}}">Delete</a>
-                            <a class="btn btn-primary" th:href="@{${#request.getServletPath()} + '/edit/'+ ${prod.id} + ${filters != null ?'/' + filters:''}}">Edit</a>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-
-            <div class="row g-3">
-                <a class="list-group-item" th:href="@{/products/all}" th:text="Prev">Link</a>
-                <a class="list-group-item" th:each="pageNum : ${#numbers.sequence(1,#request.getAttribute('pageQty'))}" th:href="@{${#request.getServletPath()} + ${'?pageNbr='} + ${pageNum - 1} + ${filters?:''}}" th:text="${pageNum}">Link</a>
-                <a class="list-group-item" th:href="@{/products/all}" th:text="Next">Link</a>
-            </div>
-
         </div>
-    </body>
+        <div class="col">
+            <form th:action="@{'/products'}" method="GET">
+                <div class="col-auto ">
+                    <button type="submit" class="btn btn-danger mb-3" th:text="Сбросить">Сбросить</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form th:action="@{'/products/edit'}" method="GET">
+                <div class="col-auto ">
+                    <button type="submit" class="btn btn-success mb-3" th:text="Добавить">Добавить</button>
+                </div>
+            </form>
+        </div>
+        <div class="col">
+            <form class="row" th:action="@{'/products'}" method="GET">
+                <div class="col-auto">
+<!--                    <label for="itemsOnPage">Элементов на странице</label>-->
+                    <select id="itemsOnPage" class="form-select" aria-label=".form-select-sm example" name="itemsOnPage">
+                        <option value="5" selected>5</option>
+                        <option value="10">10</option>
+                    </select>
+                    <div class="col-auto">
+                        <button type="submit" class="btn btn-success mb-3" th:text="Выбрать">Выбрать</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">id</th>
+                <th scope="col">Title</th>
+                <th scope="col">Price</th>
+                <th scope="col">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="prod : ${products}">
+                <td th:text="${prod.id}">Mark</td>
+                <td th:text="${prod.title}">Otto</td>
+                <td th:text="${prod.price}">111</td>
+                <td>
+                    <a class="btn btn-danger" th:href="@{${#request.getServletPath()} + '/del/'+ ${prod.id}}">Delete</a>
+                    <a class="btn btn-warning"
+                       th:href="@{${#request.getServletPath()} + '/edit/'+ ${prod.id} + ${filters != null ?'/' + filters:''}}">Edit</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <nav th:replace="fragments/pagination.html :: pagination (${pageQty}, ${pageNbr}, ${filters})"/>
+
+        <th:block th:replace="fragments/header.html :: scripts" )/>
+
+    </div>
+</body>
 
 </html>
 

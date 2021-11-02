@@ -1,0 +1,39 @@
+GET localhost:8080/app/api/v1/products
+###
+DELETE localhost:8080/app/api/v1/products/10
+###
+POST localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "price": 99999,
+  "buyers": []
+}
+###
+POST localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "id": 12,
+  "title": "Good Doggo",
+  "price": 99999,
+  "buyers": []
+}
+
+###
+PUT localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "id": 12,
+  "title": "Good Doggo",
+  "price": 999
+}
+###
+PUT localhost:8080/app/api/v1/products
+content-type:application/json
+
+{
+  "title": "Good Doggo",
+  "price": 999
+}

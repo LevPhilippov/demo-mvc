@@ -14,13 +14,18 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.function.Supplier;
+
+import static lev.filippov.demomvc.repositories.ProductSpecs.priceGreaterThanOrEq;
+import static lev.filippov.demomvc.repositories.ProductSpecs.priceLessThanOrEq;
 
 @Service
 public class ProductService {
 
     private ProductRepository productRepository;
-    private final int DEF_ITEMS_ON_PAGE = 5;
+    public static final String[] filtersSet = {"minPrice","maxPrice"};
 
     @Autowired
     @Qualifier("productRepository")
@@ -28,23 +33,35 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Page<Product> findAll(Integer pageNbr){
-        return productRepository.findAll(PageRequest.of(Optional.ofNullable(pageNbr).orElse(0), DEF_ITEMS_ON_PAGE,Sort.by(Sort.Direction.ASC,"id")));
+    public List<Product> findAll(){
+        return productRepository.findAll();
     }
 
-    public Page<Product> findFiltered(Integer pageNbr, Specification<Product> spec) {
-        return productRepository.findAll(spec,PageRequest.of(Optional.ofNullable(pageNbr).orElse(0),DEF_ITEMS_ON_PAGE, Sort.by(Sort.Direction.ASC, "id")));
+    public Page<Product> findFiltered(Integer pageNbr, Map<String, String> params,Integer itemsOnPage) {
+        return productRepository.findAll(buildProductSpecification(params),PageRequest.of(Optional.ofNullable(pageNbr).orElse(0),itemsOnPage, Sort.by(Sort.Direction.ASC, "id")));
     }
 
     public void deleteProduct(Long id) {
         productRepository.deleteById(id);
     }
 
-    public Product getById(Long id) {
-        return productRepository.findById(id).orElse(new Product());
+    public Product findById(Long id) throws Throwable {
+        if(id!=null)
+           return productRepository.findById(id).orElseThrow((Supplier<Throwable>) () -> new RuntimeException("Продукт с запрошенным ID отсутсвуетс в базе!"));
+        else
+            return new Product();
     }
     @Transactional
     public void saveOrUpdate(Product product) {
         productRepository.save(product);
+    }
+
+    private Specification<Product> buildProductSpecification(Map<String, String> params) {
+        Specification<Product> ps = Specification.where(null);
+        if(params.containsKey(filtersSet[0]))
+            ps = ps.and(priceGreaterThanOrEq(new BigDecimal(params.get(filtersSet[0]))));
+        if(params.containsKey(filtersSet[1]))
+            ps = ps.and(priceLessThanOrEq(new BigDecimal(params.get(filtersSet[1]))));
+        return ps;
     }
 }

@@ -11,9 +11,4 @@ import java.util.List;
 @Repository("productRepository")
 public interface ProductRepository extends JpaRepository<Product, Long>, JpaSpecificationExecutor<Product> {
 
-    List<Product>findAllByPriceBetween(BigDecimal minprice, BigDecimal maxprice);
-    List<Product>findAllByPriceGreaterThan(BigDecimal minprice);
-    List<Product>findAllByPriceLessThan(BigDecimal minprice);
-
-
 }

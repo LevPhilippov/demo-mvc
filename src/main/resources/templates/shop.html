@@ -42,10 +42,6 @@
                 <div class="col-auto">
                     <a th:href="@{'/products'}" class="btn btn-danger" th:text="Сбросить">Сбросить</a>
                 </div>
-                <div class="col-auto">
-                    <a th:href="@{'/products/edit'}" class="btn btn-success" th:text="Добавить">Добавить</a>
-                </div>
-
             </div>
         </div>
     </div>
@@ -60,7 +56,6 @@
                 <th scope="col">id</th>
                 <th scope="col">Title</th>
                 <th scope="col">Price</th>
-                <th scope="col">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -68,11 +63,6 @@
                 <td th:text="${prod.id}">Mark</td>
                 <td th:text="${prod.title}">Otto</td>
                 <td th:text="${prod.price}">111</td>
-                <td>
-                    <a class="btn btn-danger" th:href="@{${#request.getServletPath()} + '/del/'+ ${prod.id}}">Delete</a>
-                    <a class="btn btn-warning"
-                       th:href="@{${#request.getServletPath()} + '/edit/'+ ${prod.id} + ${filters != null ?'/' + filters:''}}">Edit</a>
-                </td>
             </tr>
             </tbody>
         </table>

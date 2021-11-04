@@ -1,25 +1,22 @@
 <html xmlns:th="http://www.thymeleaf.org">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light" th:fragment="pagination (pageQty, pageNbr, filters)">
-        <div class="container-fluid">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                    <ul class="pagination">
-                        <li class="page-item">
-                            <a class="page-link" th:classappend="${pageNbr==0?'disabled':''}"  th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}">Prew</a>
-                        </li>
-                        <li class="page-item" th:each="pageNum : ${#numbers.sequence(1,pageQty)}"}>
-                            <a class="page-link" th:classappend="${pageNbr==pageNum - 1 ? 'active':''}" th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNum - 1} + '&' +${filters?:''}}" th:text="${pageNum}">Link</a>
-                        </li>
-                        <li class="page-item">
-                            <a class="page-link" th:classappend="${pageNbr >= pageQty - 1?'disabled':''}"
-                               th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr + 1} +'&'+ ${filters?:''}}"
-                               th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}">Next</a>
-                        </li>
-                    </ul>
-            </div>
-        </div>
-    </nav>
+        <nav th:fragment="pagination (pageQty, pageNbr, filters)">
+            <ul class="pagination">
+                <li class="page-item" th:classappend="${pageNbr==0?'disabled':''}">
+                    <a class="page-link"
+                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}">Prew</a>
+                </li>
+                <li class="page-item" th:each="pageNum : ${#numbers.sequence(1,pageQty)}" }
+                    th:classappend="${pageNbr==pageNum - 1 ? 'active':''}">
+                    <a class="page-link"
+                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNum - 1} + '&' +${filters?:''}}"
+                       th:text="${pageNum}">Link</a>
+                </li>
+                <li class="page-item" th:classappend="${pageNbr >= pageQty - 1?'disabled':''}">
+                    <a class="page-link"
+                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr + 1} +'&'+ ${filters?:''}}"
+                       th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}">Next</a>
+                </li>
+            </ul>
+        </nav>
 </html>
 

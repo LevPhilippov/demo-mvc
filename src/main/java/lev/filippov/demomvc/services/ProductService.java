@@ -18,14 +18,14 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Supplier;
 
-import static lev.filippov.demomvc.repositories.ProductSpecs.priceGreaterThanOrEq;
-import static lev.filippov.demomvc.repositories.ProductSpecs.priceLessThanOrEq;
+import static lev.filippov.demomvc.repositories.ProductSpecs.*;
 
 @Service
 public class ProductService {
 
     private ProductRepository productRepository;
-    public static final String[] filtersSet = {"minPrice","maxPrice"};
+    public static final String[] filtersSet = {"minPrice","maxPrice", "word"};
+    private static final Integer DEF_ITEMS_ON_PAGE = 5;
 
     @Autowired
     @Qualifier("productRepository")
@@ -38,7 +38,8 @@ public class ProductService {
     }
 
     public Page<Product> findFiltered(Integer pageNbr, Map<String, String> params,Integer itemsOnPage) {
-        return productRepository.findAll(buildProductSpecification(params),PageRequest.of(Optional.ofNullable(pageNbr).orElse(0),itemsOnPage, Sort.by(Sort.Direction.ASC, "id")));
+        return productRepository.findAll(buildProductSpecification(params),
+        PageRequest.of(Optional.ofNullable(pageNbr).orElse(0),Optional.ofNullable(itemsOnPage).orElse(DEF_ITEMS_ON_PAGE), Sort.by(Sort.Direction.ASC, "id")));
     }
 
     public void deleteProduct(Long id) {
@@ -62,6 +63,8 @@ public class ProductService {
             ps = ps.and(priceGreaterThanOrEq(new BigDecimal(params.get(filtersSet[0]))));
         if(params.containsKey(filtersSet[1]))
             ps = ps.and(priceLessThanOrEq(new BigDecimal(params.get(filtersSet[1]))));
+        if(params.containsKey(filtersSet[2]))
+            ps = ps.and(wordLike(params.get(filtersSet[2])));
         return ps;
     }
 }

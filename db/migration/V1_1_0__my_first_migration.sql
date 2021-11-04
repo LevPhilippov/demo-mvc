@@ -20,4 +20,5 @@ CREATE TABLE IF NOT EXISTS buyers_products(
 
 INSERT INTO products(title,price) VALUES ('Narsil',15000), ('Double sabers', 7500), ('Axe', 11000),
                                          ('Sting', 21000), ('Stuff', 13000), ('Bow',11000),('Sword', 6000),('Mordor''s bow', 17000),
-                                         ('Ring of power', 99999);
+                                         ('Ring of power', 99999), ('Palantir', 30000), ('Crown of kings', 6000), ('Elven light', 21000),
+                                         ('Ring of white sorcerer', 70000), ('Archenstone', 45000);

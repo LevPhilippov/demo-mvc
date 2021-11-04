@@ -3,7 +3,6 @@ package lev.filippov.demomvc.controllers;
 
 import lev.filippov.demomvc.models.Product;
 import lev.filippov.demomvc.services.ProductService;
-import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -12,14 +11,13 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
-
-import static lev.filippov.demomvc.services.ProductService.filtersSet;
+import static lev.filippov.demomvc.utils.ProductsUtils.*;
 
 @Controller
-@RequestMapping("/products")
+@RequestMapping("/admin/products")
 public class ProductController {
 
     ProductService productService;
@@ -32,11 +30,16 @@ public class ProductController {
 
     @RequestMapping(method = RequestMethod.GET)
     public String findAll(Model model, HttpServletRequest request,
-                          @RequestParam(name = "pageNbr", required = false, defaultValue = "0") Integer pageNbr,
-                          @RequestParam (name = "itemsOnPage", required = false, defaultValue = "5")Integer itemsOnPage, Session session) {
+                          @RequestParam(name = "pageNbr", defaultValue = "0") Integer pageNbr,
+                          @RequestParam (name = "itemsOnPage", required = false)Integer itemsOnPage,
+                          HttpSession session){
+        if(itemsOnPage != null) {
+            session.setAttribute("itemsOnPage",itemsOnPage);
+            return "redirect:admin/products";
+        }
         Map<String, String> params = parseFilters(request);
         String filters = parseFiltersMapToString(params);
-        Page<Product> products = productService.findFiltered(pageNbr, params, itemsOnPage);
+        Page<Product> products = productService.findFiltered(pageNbr, params, (Integer) session.getAttribute("itemsOnPage"));
         model.addAttribute("products", products.getContent());
         model.addAttribute("filters", filters);
         model.addAttribute("pageQty", products.getTotalPages());
@@ -78,25 +81,5 @@ public class ProductController {
                             HttpServletRequest request) throws IOException {
         productService.saveOrUpdate(product);
         response.sendRedirect(request.getContextPath() + "/products");
-    }
-
-    private Map<String, String> parseFilters(HttpServletRequest request) {
-        Map<String, String> params = new HashMap<>();
-        for (String s : filtersSet) {
-            if (request.getParameter(s) != null && !request.getParameter(s).isEmpty())
-                params.put(s, request.getParameter(s));
-        }
-        return params;
-    }
-
-    private String parseFiltersMapToString(Map<String, String> params) {
-        StringBuilder sb = new StringBuilder();
-        params.forEach((key, value) -> {
-            for (String s : filtersSet) {
-                if (key.equals(s))
-                    sb.append(key + "=" + value + "&");
-            }
-        });
-        return sb.toString();
     }
 }

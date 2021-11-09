@@ -10,7 +10,7 @@
     <th:block th:insert="~{fragments/scripts :: scripts}"/>
         <div class="container">
             <form th:object="${product}"
-                  th:action="@{'admin/products/edit' + ${filters != null ? '/' + filters : ''}}"
+                  th:action="@{'/admin/products/edit' + ${filters != null? '/' + filters : ''} }"
                   th:method="POST"
             >
                 <div class="mb-3">
@@ -22,7 +22,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="prod_price" class="form-label">Product price</label>
-                    <input type="number" class="form-control" id="prod_price"  th:field="*{price}" placeholder="Product price">
+                    <input class="form-control" id="prod_price"  th:field="*{price}" placeholder="Product price">
                 </div>
                 <button type="submit" th:text="Сохранить">Отправить</button>
             </form>

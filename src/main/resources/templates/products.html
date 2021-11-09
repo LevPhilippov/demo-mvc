@@ -33,9 +33,9 @@
             <td th:text="${prod.title}">Otto</td>
             <td th:text="${prod.price}">111</td>
             <td>
-                <a class="btn btn-danger" th:href="@{'/'+ ${prod.id}}">Delete</a>
+                <a class="btn btn-danger" th:href="@{products/del(id=${prod.id})}">Delete</a>
                 <a class="btn btn-warning"
-                   th:href="@{'/' + ${prod.id} + ${filters != null ?'/' + filters:''}}">Edit</a>
+                   th:href="@{'products/edit/' + ${prod.id} + ${filters != null ?'/' + filters:''}}">Edit</a>
             </td>
         </tr>
         </tbody>

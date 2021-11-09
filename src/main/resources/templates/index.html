@@ -12,9 +12,7 @@
 <div class="container">
     <nav th:replace="~{fragments/navigation :: navigation('Home')}"/>
     <H1 class="display-1" th:utext="#{welcome(${session.user != null? session.user.username:'Stranger'})}">ВАЛКОМ</H1>
-
     <th:block th:replace="~{fragments/scripts :: scripts}" )/>
-
     </div>
 </body>
 

@@ -50,8 +50,8 @@ public class ProductController {
 
 
     //при удалении редиректом сбрасываются фильтры, а должны оставаться. Решено путем переадресации на Header - referer
-    @RequestMapping(method = RequestMethod.GET, path = {"/del/{id}", "filters/del/{id}"})
-    public void deleteProduct(@PathVariable(name = "id") Long id, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(method = RequestMethod.GET, path = {"/del", })
+    public void deleteProduct(@RequestParam(name = "id") Long id, Model model, HttpServletRequest request, HttpServletResponse response) throws IOException {
         productService.deleteProduct(id);
         response.sendRedirect(request.getHeader("referer"));
     }
@@ -65,8 +65,6 @@ public class ProductController {
                               @PathVariable(required = false) String filters,
                               Model model, HttpServletRequest request) throws Throwable {
         Product product = productService.findById(id);
-//        System.out.println(request);
-//        System.out.println(product);
         model.addAttribute("product", product);
         if (filters != null)
             model.addAttribute(filters);
@@ -80,6 +78,6 @@ public class ProductController {
                             HttpServletResponse response,
                             HttpServletRequest request) throws IOException {
         productService.saveOrUpdate(product);
-        response.sendRedirect(request.getContextPath() + "/products");
+        response.sendRedirect(request.getContextPath() + "/admin/products");
     }
 }

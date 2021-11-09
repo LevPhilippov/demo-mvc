@@ -1,9 +1,27 @@
 <html xmlns:th="http://www.thymeleaf.org">
-        <nav th:fragment="pagination (pageQty, pageNbr, filters)">
+
+    <th:block th:fragment="pagination (pageQty, pageNbr, filters)">
+
+        <form class="row justify-content-end" th:action="@{${#request.getServletPath()}}" method="GET">
+            <div class="col-auto align-self-center">
+                <label for="itemsOnPage" th:text="#{page.itemsinlist}">Элементов на странице</label>
+            </div>
+            <div class="col-auto">
+                <select id="itemsOnPage" class="form-select" aria-label=".form-select-sm example" name="itemsOnPage">
+                    <option value="5" selected>5</option>
+                    <option value="10">10</option>
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-success mb-3" th:text="#{filters.apply}">Выбрать</button>
+            </div>
+        </form>
+
+        <nav>
             <ul class="pagination">
                 <li class="page-item" th:classappend="${pageNbr==0?'disabled':''}">
                     <a class="page-link"
-                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}">Prew</a>
+                       th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr - 1}+ '&' + ${filters?:''}}" th:text="#{page.prev}">Prew</a>
                 </li>
                 <li class="page-item" th:each="pageNum : ${#numbers.sequence(1,pageQty)}" }
                     th:classappend="${pageNbr==pageNum - 1 ? 'active':''}">
@@ -14,9 +32,10 @@
                 <li class="page-item" th:classappend="${pageNbr >= pageQty - 1?'disabled':''}">
                     <a class="page-link"
                        th:href="@{${#request.getServletPath()} + '?pageNbr=' + ${pageNbr + 1} +'&'+ ${filters?:''}}"
-                       th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}">Next</a>
+                       th:attr="aria-disabled=${pageNbr >= pageQty - 1?true:false}" th:text="#{page.next}">Next</a>
                 </li>
             </ul>
         </nav>
+    </th:block>
 </html>
 

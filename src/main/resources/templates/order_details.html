@@ -1,0 +1,80 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title th:text="${title}">Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <nav th:replace="~{fragments/navigation :: navigation(${title})}"/>
+
+    <div class="row justify-content-center">
+        <div class="col-auto display-6">Детали заказа</div>
+    </div>
+
+    <form th:action="@{'/cart/order'}" method="post" th:object="${user}">
+        <div class="mb-3">
+            <label for="firstname" class="form-label" th:text="#{order.firstname}"> First name</label>
+            <input type="text" class="form-control" id="firstname" th:value="*{privateDetails.firstName}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="secondname" class="form-label" th:text="#{order.secondname}">Second name</label>
+            <input type="text" class="form-control" id="secondname" th:value="*{privateDetails.lastName}" disabled>
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label" th:text="#{order.email}">Email</label>
+            <input type="text" class="form-control" id="email" th:name="email" th:value="*{privateDetails.email}">
+        </div>
+        <div class="mb-3">
+            <label for="phone" class="form-label" th:text="#{order.phone}">Phone</label>
+            <input type="text" class="form-control" id="phone" th:name="phone" th:value="*{privateDetails.phone}">
+        </div>
+<!--        <div class="mb-3 form-check">-->
+<!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->
+<!--            <label class="form-check-label" for="exampleCheck1">Check me out</label>-->
+<!--        </div>-->
+        <button type="submit" class="btn btn-primary" th:text="#{order.finalize}">Submit</button>
+    </form>
+
+    <div class="row justify-content-center">
+        <div class="col-auto display-6" th:text="#{order}">Заказ</div>
+    </div>
+
+    <table class="table my-2">
+        <thead>
+        <tr class="table-dark">
+            <th scope="col">Num</th>
+            <th scope="col">Title</th>
+            <th scope="col">Qty</th>
+            <th scope="col">Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="item : ${cart.getOrderItems}">
+            <td th:text="${item.number}">Mark</td>
+            <td th:text="${item.product.title}">Otto</td>
+            <td th:text="${item.qty}">111</td>
+            <td th:text="${item.product.price}">111</td>
+        </tr>
+        <tr class="table-success">
+            <td th:text="''">Total price</td>
+            <td></td>
+            <td></td>
+            <td th:text="${cart.totalPrice}">9999</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <th:block th:replace="~{fragments/scripts :: scripts}" )/>
+
+</div>
+</body>
+
+</html>
+

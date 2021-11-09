@@ -1,0 +1,63 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title th:text="${title}">Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <nav th:replace="~{fragments/navigation :: navigation('cart')}"/>
+
+    <div class="row justify-content-center" th:if="${cart.getOrderItems().size()>0}">
+        <div class="col-auto display-6">Корзина</div>
+    </div>
+    <div class="row justify-content-center" th:unless="${cart.getOrderItems().size()>0}">
+        <div class="col-auto display-6" th:text="#{cart.empty}">Корзина пуста</div>
+    </div>
+    <table class="table my-2" th:if="${cart.getOrderItems().size()>0}">
+            <thead>
+            <tr class="table-dark">
+                <th scope="col" th:text="#{shop.number}">Num</th>
+                <th scope="col" th:text="#{shop.title}">Title</th>
+                <th scope="col" th:text="#{shop.qty}">Qty</th>
+                <th scope="col" th:text="#{shop.price}">Price</th>
+                <th scope="col" th:text="#{shop.id}">Id</th>
+                <th scope="col" th:text="#{shop.actions}">Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="item : ${cart.getOrderItems}">
+                <td th:text="${item.number}"></td>
+                <td th:text="${item.id}">Mark</td>
+                <td th:text="${item.product.title}">Otto</td>
+                <td th:text="${item.qty}">111</td>
+                <td th:text="${item.product.price}">111</td>
+                <td>
+                    <a class="btn btn-success" th:href="@{${#request.getServletPath()}+'/remove/' + ${item.getProduct().getId()}}">Remove</a>
+                </td>
+            </tr>
+            <tr class="table-success">
+                <td th:text="#{shop.total}">Total price</td>
+                <td th:text="''">Otto</td>
+                <td th:text="''">111</td>
+                <td th:text="''">111</td>
+                <td th:text="${cart.totalPrice}">111</td>
+                <td>
+                    <a class="btn btn-success" th:href="@{/cart/order}" th:text="#{order.finalize}">Remove</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+
+        <th:block th:replace="~{fragments/scripts :: scripts}" )/>
+
+    </div>
+</body>
+
+</html>
+

@@ -2,6 +2,7 @@ package lev.filippov.demomvc.controllers;
 
 import lev.filippov.demomvc.models.Product;
 import lev.filippov.demomvc.services.ProductService;
+import lev.filippov.demomvc.utils.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Controller;
@@ -16,6 +17,7 @@ import static lev.filippov.demomvc.utils.ProductsUtils.*;
 @Controller
 @RequestMapping("/shop")
 public class ShopController {
+
     ProductService productService;
 
     @Autowired

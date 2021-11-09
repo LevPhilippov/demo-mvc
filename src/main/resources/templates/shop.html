@@ -1,7 +1,7 @@
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 
 <head>
-    <title th:text="${title}">Main Page</title>
+    <title th:text="#{nav.home}">Main Page</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="UTF-8">
     <!-- Bootstrap CSS -->
@@ -11,51 +11,20 @@
 <body>
 <div class="container">
     <nav th:replace="~{fragments/navigation :: navigation('Shop')}"/>
-    <br/>
-    <div class="row justify-content-center">
-        <div class="col-2 display-6">Фильтры</div>
-    </div>
-    <br/>
 
-    <div class="row justify-content-between">
-        <div class="col-auto">
-            <form class="row" th:action="@{'/products'}" method="GET">
-                <div class="col-auto">
-                    <input type="number" class="form-control-plaintext" th:name="minPrice"
-                           th:value="${param.get('minPrice')}" placeholder="Мин">
-                </div>
-                <div class="col-auto">
-                    <input type="number" class="form-control-plaintext" th:name="maxPrice" th:value="${param.maxPrice}"
-                           placeholder="Макс">
-                </div>
-                <div class="col-auto">
-                    <input type="text" class="form-control-plaintext" th:name="word" th:value="${param.word}"
-                           placeholder="Название">
-                </div>
-                <div class="col-auto">
-                    <button type="submit" class="btn btn-primary" th:text="Применить">Применить</button>
-                </div>
-            </form>
-        </div>
-        <div class="col-auto">
-            <div class="row justify-content-end">
-                <div class="col-auto">
-                    <a th:href="@{'/products'}" class="btn btn-danger" th:text="Сбросить">Сбросить</a>
-                </div>
-            </div>
-        </div>
-    </div>
+    <th:block th:replace="~{fragments/filters :: filters}"/>
 
     <div class="row justify-content-center">
-        <div class="col-auto display-6">Список продуктов</div>
+        <div class="col-auto display-6" th:text="#{shop.list}">Список продуктов</div>
     </div>
 
     <table class="table my-2">
             <thead>
             <tr class="table-dark">
-                <th scope="col">id</th>
-                <th scope="col">Title</th>
-                <th scope="col">Price</th>
+                <th scope="col" th:text="#{shop.id}">id</th>
+                <th scope="col" th:text="#{shop.title}">Title</th>
+                <th scope="col" th:text="#{shop.price}">Price</th>
+                <th scope="col" th:text="#{shop.actions}">Actions</th>
             </tr>
             </thead>
             <tbody>
@@ -63,28 +32,16 @@
                 <td th:text="${prod.id}">Mark</td>
                 <td th:text="${prod.title}">Otto</td>
                 <td th:text="${prod.price}">111</td>
+                <td>
+                    <a class="btn btn-danger" th:href="@{'/cart/add/' + ${prod.id}}" th:text="#{shop.add}">Add to Cart</a>
+                </td>
             </tr>
             </tbody>
         </table>
 
-        <form class="row justify-content-end" th:action="@{'/products'}" method="GET">
-            <div class="col-auto align-self-center">
-                <label for="itemsOnPage">Элементов на странице</label>
-            </div>
-            <div class="col-auto">
-                <select id="itemsOnPage" class="form-select" aria-label=".form-select-sm example" name="itemsOnPage">
-                    <option value="5" selected>5</option>
-                    <option value="10">10</option>
-                </select>
-            </div>
-            <div class="col-auto">
-                    <button type="submit" class="btn btn-success mb-3" th:text="Выбрать">Выбрать</button>
-            </div>
-        </form>
+        <th:block th:replace="fragments/pagination.html :: pagination (${pageQty}, ${pageNbr}, ${filters})"/>
 
-    <nav th:replace="fragments/pagination.html :: pagination (${pageQty}, ${pageNbr}, ${filters})"/>
-
-        <th:block th:replace="~{fragments/header :: scripts}" )/>
+        <th:block th:replace="~{fragments/scripts :: scripts}" )/>
 
     </div>
 </body>

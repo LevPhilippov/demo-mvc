@@ -34,6 +34,7 @@ public class ProductService {
     }
 
     public List<Product> findAll(){
+        System.out.println(productRepository.findById(1L));
         return productRepository.findAll();
     }
 
@@ -67,4 +68,9 @@ public class ProductService {
             ps = ps.and(wordLike(params.get(filtersSet[2])));
         return ps;
     }
+
+    public Product getById(Long id){
+        return productRepository.getById(id);
+    }
+
 }

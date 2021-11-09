@@ -22,18 +22,13 @@ public class Product implements Serializable {
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @Column(name = "title")
-    String title;
+    private String title;
 
     @Column(name = "price")
-    BigDecimal price;
-
-    @ManyToMany(mappedBy = "products")
-    Set<Buyer> buyers;
-
-
+    private BigDecimal price;
 
     @Override
     public boolean equals(Object o) {
@@ -48,13 +43,4 @@ public class Product implements Serializable {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", price=" + price +
-                ", buyers=" + buyers +
-                '}';
-    }
 }

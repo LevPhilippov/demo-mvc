@@ -4,6 +4,7 @@ import lev.filippov.demomvc.models.Role;
 import lev.filippov.demomvc.models.User;
 import lev.filippov.demomvc.repositories.RoleRepository;
 import lev.filippov.demomvc.repositories.UserRepository;
+import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,6 +15,8 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.Collection;
+import java.util.Optional;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,9 +43,11 @@ public class UserServiceImpl implements UserService{
 //    }
 
 
+    @SneakyThrows
     @Override
     public User findByUsername(String username) {
-        return userRepository.findUserByUsername(username);
+        Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username));
+        return userOptional.orElseThrow((Supplier<Throwable>) () -> new UsernameNotFoundException(String.format("User with username %s is not found!", username)));
     }
 
     @Transactional

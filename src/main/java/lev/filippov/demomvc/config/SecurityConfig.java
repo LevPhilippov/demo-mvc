@@ -17,6 +17,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(securedEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private UserService userService;
+    private CustomAuthenticationSuccessHandler handler;
+
+    @Autowired
+    public void setHandler(CustomAuthenticationSuccessHandler handler) {
+        this.handler = handler;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -32,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
+                .antMatchers("/cart/**").authenticated()
 //                .antMatchers("/admin", "/admin/**").hasAnyRole("ADMIN", "MANAGER")
 ////                .antMatchers("/products").hasAnyRole("ADMIN", "MANAGER")
 //                .antMatchers("/admin/users/**").hasRole("ADMIN")
@@ -43,6 +50,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginPage("/login")
                 .loginProcessingUrl("/authenticate")
                 .defaultSuccessUrl("/")
+                .successHandler(handler)
                 .permitAll()
                 .and()
                 .logout()

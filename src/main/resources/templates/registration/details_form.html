@@ -1,0 +1,53 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" lang="ru">
+
+<head>
+    <title th:text="#{nav.registration}">Registration</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <nav th:replace="~{fragments/navigation :: navigation('Registration')}"/>
+
+        <div class="row justify-content-center">
+            <div class="col-12" >
+                <p class="display-3" th:text="#{reg.form}" style="text-align: center">Registration form</p>
+            </div>
+            <div class="col-8">
+                <form class="row g-3" th:object="${details}" method="POST" th:action="@{registration/proceed}">
+                        <input type="number" class="form-control" id="userId" th:name="userId" th:value="${userId}" hidden>
+                    <div class="col-md-6">
+                        <label for="inputName" class="form-label" th:text="#{reg.firstname}">First name</label>
+                        <input type="text" class="form-control" id="inputName" th:field="*{firstName}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputLastname" class="form-label" th:text="#{reg.lastname}">Last name</label>
+                        <input type="text" class="form-control" id="inputLastname" th:field="*{lastName}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputEmail" class="form-label" th:text="#{reg.email}">E-mail</label>
+                        <input type="email" class="form-control" id="inputEmail" th:field="*{email}">
+                    </div>
+                    <div class="col-md-6">
+                        <label for="inputPhone" class="form-label" th:text="#{reg.phone}">Phone</label>
+                        <input type="text" class="form-control" id="inputPhone" th:field="*{phone}">
+                    </div>
+
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                </form>
+                <p th:text="#{reg.skip.text}">You could skip this page and start shopping!</p>
+                <a class="btn btn-success" th:href="@{/login}" th:text="#{reg.skip}">
+                    Skip details.
+                </a>
+            </div>
+        </div>
+        <th:block th:replace="~{fragments/scripts :: scripts}" )/>
+    </div>
+</body>
+</html>
+

@@ -45,9 +45,9 @@
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
                     </li>
-<!--                    <li class="nav-item">-->
-<!--                        <a class="nav-link" th:classappend="${pageName=='Admin'?'active':''}" sec:authorize="hasRole('ADMIN')" href="#" >Admin</a>-->
-<!--                    </li>-->
+                    <li class="nav-item">
+                        <a class="nav-link" aria-current="page" th:href="@{/registration}" th:classappend="${pageName=='Registration'?'active':''}" th:text="#{reg.end}" sec:authorize="isAnonymous()">Registration</a>
+                    </li>
                 </ul>
                 <form class="d-flex" method="POST" th:action="@{/authenticate}" sec:authorize="isAnonymous()">
                     <input class="form-control me-2" type="text" name="username" placeholder="Login">

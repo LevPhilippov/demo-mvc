@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Date;
 
 @ControllerAdvice
@@ -19,42 +21,9 @@ public class ProductExceptionHandler {
             return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
         }
 
-    static class ErrorResponce {
-            HttpStatus status;
-            String message;
-            Date date;
+//        @ExceptionHandler
+//        public void handleUserAlreadyExistsException(UserAlreadyExistException e, HttpServletResponse response, HttpServletRequest request) {
+//        }
 
-            public ErrorResponce(HttpStatus status, String message, Date date) {
-                this.status = status;
-                this.message = message;
-                this.date = date;
-            }
 
-        public ErrorResponce() {
-        }
-
-        public HttpStatus getStatus() {
-                return status;
-            }
-
-            public void setStatus(HttpStatus status) {
-                this.status = status;
-            }
-
-            public String getMessage() {
-                return message;
-            }
-
-            public void setMessage(String message) {
-                this.message = message;
-            }
-
-            public Date getDate() {
-                return date;
-            }
-
-            public void setDate(Date date) {
-                this.date = date;
-            }
-        }
 }

@@ -8,7 +8,6 @@ import lev.filippov.demomvc.services.ProductService;
 import lev.filippov.demomvc.services.UserService;
 import lev.filippov.demomvc.utils.Cart;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;

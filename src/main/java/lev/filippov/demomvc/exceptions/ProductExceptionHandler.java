@@ -13,17 +13,13 @@ import java.util.Date;
 public class ProductExceptionHandler {
 
         @ExceptionHandler
-        public ResponseEntity<ErrorResponce> handleError(RuntimeException ex){
+        public ResponseEntity<ErrorResponce> handleError(ServerException ex){
             ErrorResponce e = new ErrorResponce();
             e.setDate(new Date(System.currentTimeMillis()));
             e.setMessage(ex.getMessage());
             e.setStatus(HttpStatus.BAD_REQUEST);
             return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
         }
-
-//        @ExceptionHandler
-//        public void handleUserAlreadyExistsException(UserAlreadyExistException e, HttpServletResponse response, HttpServletRequest request) {
-//        }
 
 
 }

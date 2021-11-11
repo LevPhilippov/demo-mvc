@@ -34,13 +34,24 @@
                     <li class="nav-item">
                         <a class="nav-link" th:classappend="${pageName=='Order details'?'active':''}" sec:authorize="isAuthenticated()" th:if="${pageName == 'Order details'}" th:href="@{/cart}" th:text="#{nav.order}">Order details</a>
                     </li>
-                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')" id="adminDashBoard">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{nav.admin}">
                             Admin
                         </a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" th:href="@{/admin/products}" th:text="#{admin.prod.title}">Products</a></li>
                             <li><a class="dropdown-item" th:href="@{/admin/users}" th:text="#{admin.users}">Users</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Something else here</a></li>
+                        </ul>
+                    </li>
+                    <li class="nav-item dropdown" sec:authorize="hasRole('USER')" id="userProfile">
+                        <a class="nav-link dropdown-toggle" href="#" id="userNavbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false" th:text="#{user.profile}">
+                            Profile
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="userNavbarDropdown">
+                            <li><a class="dropdown-item" th:href="@{'/user/' + ${session.user.id} + '/orders'}" th:text="#{user.profile.orders}">Orders</a></li>
+                            <li><a class="dropdown-item" th:href="@{'/user/' + ${session.user.id} + '/info'}" th:text="#{user.profile.info}">Info</a></li>
                             <li><hr class="dropdown-divider"></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
@@ -62,7 +73,7 @@
                         <option value="ru" selected>RU</option>
                         <option value="en">EN</option>
                     </select>
-                    <button class="btn btn-outline-success" type="submit" th:text="#{filters.apply}">Login</button>
+                    <button class="btn btn-outline-success" type="submit" th:text="#{filters.apply}">Apply</button>
                 </form>
             </div>
         </div>

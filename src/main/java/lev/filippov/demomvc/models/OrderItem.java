@@ -51,4 +51,13 @@ public class OrderItem implements Serializable {
         return Objects.hash(product.getId());
     }
 
+    @Override
+    public String toString() {
+        return "OrderItem{" +
+                "id=" + id +
+                ", number=" + number +
+                ", product=" + product +
+                ", qty=" + qty +
+                '}';
+    }
 }

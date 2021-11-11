@@ -1,6 +1,7 @@
 package lev.filippov.demomvc.services;
 
 import lev.filippov.demomvc.models.Order;
+import lev.filippov.demomvc.models.OrderDetails;
 import lev.filippov.demomvc.models.PrivateDetails;
 import lev.filippov.demomvc.models.User;
 import lev.filippov.demomvc.repositories.OrderRepository;
@@ -17,24 +18,19 @@ import java.util.Objects;
 public class CartService {
 
     OrderRepository orderRepository;
+    UserService userService;
 
     @PersistenceContext
     EntityManager entityManager;
 
-    @Autowired
-    public void setOrderRepository(OrderRepository orderRepository) {
+    public CartService(OrderRepository orderRepository, UserService userService) {
         this.orderRepository = orderRepository;
+        this.userService = userService;
     }
 
     @Transactional
-    public void saveOrder(Cart cart, User user, PrivateDetails privateDetails) {
-        Order order = new Order(cart, user);
-        if (!Objects.isNull(privateDetails.getEmail())) {
-            user.getPrivateDetails().setEmail(privateDetails.getEmail());
-        }
-        if (!Objects.isNull(privateDetails.getPhone())) {
-            user.getPrivateDetails().setPhone(privateDetails.getPhone());
-        }
+    public void saveOrder(Cart cart, User user, OrderDetails details) {
+        Order order = new Order(cart, user, details);
         orderRepository.save(order);
     }
 

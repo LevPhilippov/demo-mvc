@@ -3,7 +3,7 @@ package lev.filippov.demomvc.exceptions;
 import lev.filippov.demomvc.models.User;
 import lombok.Getter;
 
-public class UserAlreadyExistException extends RuntimeException{
+public class UserAlreadyExistException extends ServerException{
 
     private static final long serialVersionUID = 7093698835717003886L;
 

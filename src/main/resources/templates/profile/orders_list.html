@@ -1,0 +1,64 @@
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<head>
+    <title th:text="#{nav.home}">Main Page</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="UTF-8">
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+</head>
+
+<body>
+<div class="container">
+    <nav th:replace="~{fragments/navigation :: navigation('Orders')}"/>
+
+    <div class="row justify-content-center">
+        <div class="col-auto display-6" th:text="#{user.profile.orders}">Заказы</div>
+    </div>
+
+    <figure class="text-center" th:unless="${orders.size()>0}">
+        <blockquote class="blockquote">
+            <p>You didn't make any order!</p>
+        </blockquote>
+    </figure>
+
+    <table class="table my-2" th:if="${orders.size()>0}">
+            <thead>
+                <tr class="table-dark">
+                    <th scope="col" th:text="#{user.profile.orders.id}">Id</th>
+                    <th scope="col" th:text="#{user.profile.orders.price}">Price</th>
+                    <th scope="col" th:text="#{user.profile.orders.content}">Content</th>
+                </tr>
+            </thead>
+            <tbody>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.id}">973</td>
+                <td th:text="${order.price}">3777.55</td>
+                <td th:with="orderItems=${order.orderItems}">
+                    <p th:each="item : ${orderItems}" th:text="${item.product.title} + ' х ' + ${item.qty} + '     ' + ${item.product.price*item.qty}">Prod1</p>
+<!--                    <table class="table" style="font-size: 12px">-->
+<!--                        <thead>-->
+<!--                            <th scope="col" th:text="#{shop.title}">Title</th>-->
+<!--                            <th scope="col" th:text="#{shop.price}">Price</th>-->
+<!--                            <th scope="col" th:text="#{shop.qty}">Quantity</th>-->
+<!--                        </thead>-->
+<!--                        <tbody >-->
+<!--                            <tr th:each="item : ${orderItems}">-->
+<!--                                <td th:text="${item.product.title}">Prod1</td>-->
+<!--                                <td th:text="${item.product.price}">111</td>-->
+<!--                                <td th:text="${item.qty}">33</td>-->
+<!--                            </tr>-->
+<!--                        </tbody>-->
+<!--                    </table>-->
+                </td>
+            </tr>
+            </tbody>
+        </table>
+
+        <th:block th:replace="~{fragments/scripts :: scripts}" )/>
+
+    </div>
+</body>
+
+</html>
+

@@ -48,9 +48,15 @@ public class UserServiceImpl implements UserService{
     @Override
     public User findByUsername(String username) {
         Optional<User> userOptional = Optional.ofNullable(userRepository.findUserByUsername(username.toLowerCase()));
-        return userOptional.orElseThrow((Supplier<Throwable>) () -> new UsernameNotFoundException(String.format("User with username %s is not found!", username)));
+        return userOptional.orElseThrow(() -> new UsernameNotFoundException(String.format("User with username %s is not found!", username)));
     }
 
+    @Override
+    public User findById(Long userId) throws UsernameNotFoundException {
+        return userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(String.format("User with user Id %d is not found!", userId)));
+    }
+
+    @Transactional
     @Override
     public User saveNewUser(String username, String password) throws UserAlreadyExistException, UsernameNotFoundException {
         User user = userRepository.findUserByUsername(username.toLowerCase());
@@ -67,12 +73,14 @@ public class UserServiceImpl implements UserService{
         return user;
     }
 
+    @Transactional
     @Override
-    public void saveDetails(Long userId, PrivateDetails details) throws Throwable {
-        User user = userRepository.findById(userId).orElseThrow((Supplier<Throwable>) () -> new RuntimeException(String.format("User with Id = %d is not found!", userId)));
+    public void saveDetails(Long userId, PrivateDetails details) throws  UsernameNotFoundException {
+        User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(String.format("User with Id = %d is not found!", userId)));
         user.setPrivateDetails(details);
         userRepository.save(user);
     }
+
 
     @Transactional
     @Override

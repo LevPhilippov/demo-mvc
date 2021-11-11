@@ -1,6 +1,7 @@
 package lev.filippov.demomvc.controllers;
 
 import lev.filippov.demomvc.models.Order;
+import lev.filippov.demomvc.models.OrderDetails;
 import lev.filippov.demomvc.models.PrivateDetails;
 import lev.filippov.demomvc.models.User;
 import lev.filippov.demomvc.services.CartService;
@@ -17,9 +18,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Optional;
 
 @Controller
-@SessionScope
 @RequestMapping("/cart")
 public class CartController {
 
@@ -69,16 +70,17 @@ public class CartController {
 
     @RequestMapping(value = "/order", method = RequestMethod.GET)
     public String showOrderDetails(Model model, Principal principal) {
-        model.addAttribute("user", userService.findByUsername(principal.getName()));
+//        PrivateDetails privateDetails = userService.findByUsername(principal.getName()).getPrivateDetails();
+        model.addAttribute("details", new OrderDetails());
         model.addAttribute(cart);
         return "order_details";
     }
 
-    @PostMapping("/order")
-    public void saveOrder(Principal principal, HttpServletResponse response, HttpServletRequest request) throws IOException {
-        PrivateDetails privateDetails = new PrivateDetails(null,null,null,request.getParameter("email"), request.getParameter("phone"));
+    @RequestMapping(value = "/order", method = RequestMethod.POST)
+    public void saveOrder(Principal principal, HttpServletResponse response, HttpServletRequest request,
+                          @ModelAttribute("details") OrderDetails details) throws IOException {
         User user = userService.findByUsername(principal.getName());
-        cartService.saveOrder(cart, user, privateDetails);
+        cartService.saveOrder(cart, user, details);
         cart.clear();
         response.sendRedirect(request.getContextPath() + "/shop");
     }

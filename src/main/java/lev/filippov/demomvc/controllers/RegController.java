@@ -40,7 +40,7 @@ public class RegController {
 
         if(username.length()<1 || password.length()<1) {
             try{
-                throw new PasswordOrUsernameException();
+                throw new PasswordOrUsernameException("Username or password are too short!");
             } catch (PasswordOrUsernameException e) {
                 model.addAttribute("nullError",e);
                 return "registration/reg_form";

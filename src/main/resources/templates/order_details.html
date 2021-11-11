@@ -18,22 +18,22 @@
         <div class="col-auto display-6">Детали заказа</div>
     </div>
 
-    <form th:action="@{'/cart/order'}" method="post" th:object="${user}">
+    <form th:action="@{'/cart/order'}" method="post" th:object="${details}">
         <div class="mb-3">
             <label for="firstname" class="form-label" th:text="#{order.firstname}"> First name</label>
-            <input type="text" class="form-control" id="firstname" th:value="*{privateDetails.firstName}" disabled>
+            <input type="text" class="form-control" id="firstname" th:field="*{firstName}">
         </div>
         <div class="mb-3">
             <label for="secondname" class="form-label" th:text="#{order.secondname}">Second name</label>
-            <input type="text" class="form-control" id="secondname" th:value="*{privateDetails.lastName}" disabled>
+            <input type="text" class="form-control" id="secondname" th:field="*{lastName}">
         </div>
         <div class="mb-3">
             <label for="email" class="form-label" th:text="#{order.email}">Email</label>
-            <input type="text" class="form-control" id="email" th:name="email" th:value="*{privateDetails.email}">
+            <input type="text" class="form-control" id="email" th:field="*{email}">
         </div>
         <div class="mb-3">
             <label for="phone" class="form-label" th:text="#{order.phone}">Phone</label>
-            <input type="text" class="form-control" id="phone" th:name="phone" th:value="*{privateDetails.phone}">
+            <input type="text" class="form-control" id="phone" th:field="*{phone}">
         </div>
 <!--        <div class="mb-3 form-check">-->
 <!--            <input type="checkbox" class="form-check-input" id="exampleCheck1">-->

@@ -1,9 +1,11 @@
 package lev.filippov.demomvc.services;
 
 import lev.filippov.demomvc.exceptions.UserAlreadyExistException;
+import lev.filippov.demomvc.models.Order;
 import lev.filippov.demomvc.models.PrivateDetails;
 import lev.filippov.demomvc.models.Role;
 import lev.filippov.demomvc.models.User;
+import lev.filippov.demomvc.repositories.OrderRepository;
 import lev.filippov.demomvc.repositories.RoleRepository;
 import lev.filippov.demomvc.repositories.UserRepository;
 import lombok.SneakyThrows;
@@ -26,23 +28,24 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
     private RoleRepository roleRepository;
     private BCryptPasswordEncoder passwordEncoder;
-
+    private OrderRepository orderRepository;
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
     @Autowired
     public void setRoleRepository(RoleRepository roleRepository) {
         this.roleRepository = roleRepository;
     }
-
     @Autowired
     public void setPasswordEncoder(BCryptPasswordEncoder passwordEncoder) {
         this.passwordEncoder = passwordEncoder;
     }
-
+    @Autowired
+    public void setOrderRepository(OrderRepository orderRepository) {
+        this.orderRepository = orderRepository;
+    }
 
     @SneakyThrows
     @Override
@@ -79,6 +82,14 @@ public class UserServiceImpl implements UserService{
         User user = userRepository.findById(userId).orElseThrow(() -> new UsernameNotFoundException(String.format("User with Id = %d is not found!", userId)));
         user.setPrivateDetails(details);
         userRepository.save(user);
+
+        //реализация простейшего механизма автоподвязвания заказов по номеру телефона
+        Set<Order> orders = orderRepository.findAllByOrderDetailsPhone(details.getPhone());
+        for (Order order : orders) {
+            order.setUser(user);
+        }
+        orderRepository.saveAll(orders);
+        //
     }
 
 

@@ -47,7 +47,8 @@
                 <td th:text="''">111</td>
                 <td th:text="${cart.totalPrice}">111</td>
                 <td>
-                    <a class="btn btn-success" th:href="@{/cart/order}" th:text="#{order.finalize}">Remove</a>
+                    <a class="btn btn-success" th:href="@{/cart/order}" th:text="#{order.finalize}" sec:authorize="isAuthenticated()">Make an order</a>
+                    <a class="btn btn-success" th:href="@{/cart/oneclick}" th:text="#{order.finalize}" sec:authorize="isAnonymous()">One click order</a>
                 </td>
             </tr>
             </tbody>

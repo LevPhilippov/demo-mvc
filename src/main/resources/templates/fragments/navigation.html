@@ -29,7 +29,7 @@
                         <a class="nav-link" th:classappend="${pageName=='Shop'?'active':''}" th:href="@{/shop}" th:text="#{nav.shop}">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" th:classappend="${pageName=='cart'?'active':''}" sec:authorize="isAuthenticated()" th:href="@{/cart}" th:text="#{nav.cart}">Cart</a>
+                        <a class="nav-link" th:classappend="${pageName=='cart'?'active':''}" th:href="@{/cart}" th:text="#{nav.cart}">Cart</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:classappend="${pageName=='Order details'?'active':''}" sec:authorize="isAuthenticated()" th:if="${pageName == 'Order details'}" th:href="@{/cart}" th:text="#{nav.order}">Order details</a>

@@ -1,9 +1,9 @@
 DROP TABLE IF EXISTS order_details;
 CREATE TABLE order_details (
                                id bigserial,
-                               first_name VARCHAR(255) NOT NULL,
-                               last_name VARCHAR(255) NOT NULL,
-                               email VARCHAR(255) NOT NULL,
+                               first_name VARCHAR(255)  NOT NULL,
+                               last_name VARCHAR(255),
+                               email VARCHAR(255),
                                phone VARCHAR(20) NOT NULL,
                                PRIMARY KEY (id)
 );
@@ -12,7 +12,7 @@ CREATE TABLE order_details (
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders(
     id bigserial,
-    user_id BIGINT NOT NULL,
+    user_id BIGINT,
     price DECIMAL NOT NULL,
     details_id BIGINT NOT NULL,
     PRIMARY KEY (id),

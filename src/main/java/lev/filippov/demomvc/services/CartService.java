@@ -34,4 +34,8 @@ public class CartService {
         orderRepository.save(order);
     }
 
+    public void saveAnonymousOrder(Cart cart,OrderDetails details) {
+        Order order = new Order(cart,null,details);
+        orderRepository.save(order);
+    }
 }

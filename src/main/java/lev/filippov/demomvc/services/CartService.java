@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
+import java.security.Principal;
 import java.util.Objects;
 
 @Service
@@ -29,7 +30,8 @@ public class CartService {
     }
 
     @Transactional
-    public void saveOrder(Cart cart, User user, OrderDetails details) {
+    public void saveOrder(Cart cart, Principal principal, OrderDetails details) {
+        User user = userService.findByUsername(principal.getName());
         Order order = new Order(cart, user, details);
         orderRepository.save(order);
     }

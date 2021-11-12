@@ -20,10 +20,11 @@ public class CustomAuthenticationSuccessHandler implements AuthenticationSuccess
 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+        String referer = request.getHeader("referer");
         User user = userService.findByUsername(authentication.getName());
         request.getSession().setAttribute("user", user);
         if(!request.getHeader("referer").contains("login") && !request.getHeader("referer").contains("registration")) {
-            response.sendRedirect(request.getHeader("referer"));
+            response.sendRedirect(referer);
         } else {
             response.sendRedirect(request.getContextPath() + "/shop");
         }

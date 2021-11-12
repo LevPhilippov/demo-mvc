@@ -5,6 +5,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Entity
@@ -20,7 +23,8 @@ public class OrderDetails  implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name")
+    @Column(name = "first_name", nullable = false)
+    @Size(min = 2, max = 25, message = "Too short name! First name must be between 2 and 25 simbols!")
     private String firstName;
 
     @Column(name = "last_name")
@@ -29,7 +33,7 @@ public class OrderDetails  implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @Column(name = "phone")
+    @Column(name = "phone", nullable = false)
     private String phone;
 
     @OneToOne(mappedBy = "orderDetails")

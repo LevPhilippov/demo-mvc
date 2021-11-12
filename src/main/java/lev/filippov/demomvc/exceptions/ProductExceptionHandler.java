@@ -26,20 +26,20 @@ public class ProductExceptionHandler {
             return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
         }
 
-        //экспериментальтно
-        @ExceptionHandler(BindException.class)
-        public ResponseEntity<ErrorResponce> handleError(BindException ex){
-            List<ObjectError> allErrors = ex.getAllErrors();
-            for (ObjectError e : allErrors) {
-                System.out.println(e.getObjectName() + " " + Arrays.toString(e.getArguments()) + " " + e.getDefaultMessage() + "\n");
-            }
-
-            ErrorResponce e = new ErrorResponce();
-            e.setDate(new Date(System.currentTimeMillis()));
-            e.setMessage(ex.getMessage());
-            e.setStatus(HttpStatus.BAD_REQUEST);
-            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
-        }
+        //экспериментально
+//        @ExceptionHandler(BindException.class)
+//        public ResponseEntity<ErrorResponce> handleError(BindException ex){
+//            List<ObjectError> allErrors = ex.getAllErrors();
+//            for (ObjectError e : allErrors) {
+//                System.out.println(e.getObjectName() + " " + Arrays.toString(e.getArguments()) + " " + e.getDefaultMessage() + "\n");
+//            }
+//
+//            ErrorResponce e = new ErrorResponce();
+//            e.setDate(new Date(System.currentTimeMillis()));
+//            e.setMessage(ex.getMessage());
+//            e.setStatus(HttpStatus.BAD_REQUEST);
+//            return new ResponseEntity<>(e,HttpStatus.BAD_REQUEST);
+//        }
 
 
 }

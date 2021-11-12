@@ -1,0 +1,16 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
+<div class="col-xs-15" th:fragment="alert(alertName)">
+    <div>
+        <div th:if="${alertName != null}">
+            <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:text="${alertName}">
+                Name alert
+            </div>
+        </div>
+    </div>
+<div>
+
+
+</html>
+

@@ -14,10 +14,7 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.Errors;
-import org.springframework.validation.ObjectError;
+import org.springframework.validation.*;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +22,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 @Controller
 @RequestMapping("/cart")
@@ -94,25 +93,29 @@ public class CartController {
     }
 
     @RequestMapping(value = "/oneclick", method = RequestMethod.POST)
-    public String showOneClickForm(@Valid @ModelAttribute("details") OrderDetails details,
+    public String showOneClickForm(@Valid @ModelAttribute("details") OrderDetails details, final BindingResult result,
                                    HttpServletRequest request, HttpServletResponse response,
                                    Model model, Principal principal) throws IOException {
+
         if(request.getParameter("roboCheck") == null && principal == null) {
             throw new WrongAccessException("You are fucking robot!");
         }
 
-        if(Strings.isEmpty(details.getPhone()) || Strings.isEmpty(details.getFirstName()))
-            {
-                model.addAttribute("error", new ServerException("Name and phone number shouldn't be empty!"));
+        if(result.hasErrors()) {
+            for(FieldError fe : result.getFieldErrors()){
+                model.addAttribute(fe.getField()+"Alert", fe.getDefaultMessage());
+            }
                 model.addAttribute("details", new OrderDetails());
                 model.addAttribute(cart);
                 return  "cart/one_click_form";
             }
+
         if(principal!= null) {
            cartService.saveOrder(cart,principal,details);
         } else {
             cartService.saveAnonymousOrder(cart, details);
         }
+
         cart.clear();
         response.sendRedirect(request.getContextPath() + "/shop");
         return null;

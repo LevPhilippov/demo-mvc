@@ -19,30 +19,41 @@
     </div>
 
     <form th:action="@{'/cart/oneclick'}" method="post" th:object="${details}">
-        <div class="form-group">
-            <div class="col-xs-15">
-                <div>
-                    <div th:if="${error != null}">
-                        <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:text="#{order.oneclick.error}">
-                            You are a robot!
-                        </div>
-                    </div>
-                </div>
-        </div>
         <div class="mb-3">
             <label for="firstname" class="form-label" th:text="#{order.firstname}"> First name</label>
             <input type="text" class="form-control" id="firstname" th:field="*{firstName}">
         </div>
+<!--            <div class="col-xs-15">-->
+<!--                <div>-->
+<!--                    <div th:if="${firstName != null}">-->
+<!--                        <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:text="${firstNameAlert}">-->
+<!--                            Name alert-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        <div th:replace="~{cart/alerts :: alert(${firstNameAlert})}" th:if="${firstNameAlert != null}"/>
+            <div class="mb-3">
+                <label for="phone" class="form-label" th:text="#{order.phone}">Phone</label>
+                <input type="text" class="form-control" id="phone" th:field="*{phone}">
+            </div>
+        <div th:replace="~{cart/alerts :: alert(${phoneAlert})}" th:if="${phoneAlert != null}"/>
 
-        <div class="mb-3">
-            <label for="phone" class="form-label" th:text="#{order.phone}">Phone</label>
-            <input type="text" class="form-control" id="phone" th:field="*{phone}">
-        </div>
-        <div class="mb-3 form-check" sec:authorize="!hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">
-            <input type="checkbox" class="form-check-input" id="imnotarobot" th:name="roboCheck">
-            <label class="form-check-label" for="imnotarobot" th:if="#{reg.imnotarobot}">I'm not a robot!</label>
-        </div>
-        <button type="submit" class="btn btn-primary" th:text="#{order.finalize}">Submit</button>
+        <!--            <div class="col-xs-15">-->
+<!--                <div>-->
+<!--                    <div th:if="${firstName != null}">-->
+<!--                        <div class="alert alert-danger col-xs-offset-1 col-xs-10" th:text="${phoneAlert}">-->
+<!--                            Phone alert-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+
+            <div class="mb-3 form-check" sec:authorize="!hasRole('ROLE_USER') and !hasRole('ROLE_ADMIN')">
+                <input type="checkbox" class="form-check-input" id="imnotarobot" th:name="roboCheck">
+                <label class="form-check-label" for="imnotarobot" th:if="#{reg.imnotarobot}">I'm not a robot!</label>
+            </div>
+            <button type="submit" class="btn btn-primary" th:text="#{order.finalize}">Submit</button>
     </form>
 
     <div class="row justify-content-center">

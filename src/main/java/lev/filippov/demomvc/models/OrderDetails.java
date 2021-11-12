@@ -34,6 +34,7 @@ public class OrderDetails  implements Serializable {
     private String email;
 
     @Column(name = "phone", nullable = false)
+    @Size(min = 11,max = 20, message = "Phone number hould be between 11 and 20 digits!")
     private String phone;
 
     @OneToOne(mappedBy = "orderDetails")

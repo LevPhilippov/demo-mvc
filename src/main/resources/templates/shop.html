@@ -29,8 +29,8 @@
             </thead>
             <tbody>
             <tr th:each="prod : ${products}">
-                <td th:text="${prod.id}">Mark</td>
-                <td th:text="${prod.title}">Otto</td>
+                <td th:text="${prod.id}">1</td>
+                <td><a th:text="${prod.title}" th:href="@{'shop/' + ${prod.id}}">Otto</a></td>
                 <td th:text="${prod.price}">111</td>
                 <td>
                     <a class="btn btn-danger" th:href="@{'/cart/add/' + ${prod.id}}" th:text="#{shop.add}">Add to Cart</a>
@@ -38,10 +38,14 @@
             </tr>
             </tbody>
         </table>
-
         <th:block th:replace="fragments/pagination.html :: pagination (${pageQty}, ${pageNbr}, ${filters})"/>
-
-        <th:block th:replace="~{fragments/scripts :: scripts}" )/>
+            <div th:if="${shownProds != null}">
+                <p>Visited</p>
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="shownProd : ${shownProds}"  th:text="${shownProd.title}">An item</li>
+                </ul>
+            </div>
+    <th:block th:replace="~{fragments/scripts :: scripts}" )/>
 
     </div>
 </body>

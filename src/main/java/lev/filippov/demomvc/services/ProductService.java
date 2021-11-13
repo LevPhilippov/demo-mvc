@@ -2,6 +2,7 @@ package lev.filippov.demomvc.services;
 
 
 import lev.filippov.demomvc.models.Product;
+import lev.filippov.demomvc.models.ProductDto;
 import lev.filippov.demomvc.repositories.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,9 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Supplier;
 
 import static lev.filippov.demomvc.repositories.ProductSpecs.*;
@@ -34,7 +33,7 @@ public class ProductService {
     }
 
     public List<Product> findAll(){
-        System.out.println(productRepository.findById(1L));
+//        System.out.println(productRepository.findById(1L));
         return productRepository.findAll();
     }
 
@@ -73,4 +72,7 @@ public class ProductService {
         return productRepository.getById(id);
     }
 
+    public Set<ProductDto> findAllByIds(Collection<Long> ids) {
+        return productRepository.findAllByIdIn(ids);
+    };
 }
